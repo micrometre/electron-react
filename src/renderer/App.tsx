@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 
@@ -18,6 +19,7 @@ function UploadImage() {
   const uploadToServer = async () => {
     const body = new FormData();
     body.append('file', image);
+    console.log(image);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const response = await fetch('http://35.246.54.118:5000/upload', {
       method: 'POST',
@@ -28,7 +30,13 @@ function UploadImage() {
     <div className=" border-solid border-4 border-blue-500 flex  items-center justify-between p-4 shadow">
       <div className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">
         <h2 className="mb-3 text-2xl font-semibold">Upload Image</h2>
-        <input type="file" name="myImage" onChange={uploadToClient} />
+        <input
+          accept="image/*"
+          id="files"
+          type="file"
+          name="file"
+          onChange={uploadToClient}
+        />
         <button
           className="btn btn-primary"
           type="submit"
