@@ -1,21 +1,25 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable no-console */
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
-
 import './App.css';
 import 'tailwindcss/tailwind.css';
+import { Button } from 'flowbite-react';
 
+function VoideoStream() {
+  return (
+      <video controls width="90%" className="videoPlayer" src="http://35.246.54.118:5000/video" />
+  );
+}
 function UploadImage() {
   const [image, setImage] = useState(null);
-
   const uploadToClient = (event) => {
     if (event.target.files && event.target.files[0]) {
       const i = event.target.files[0];
-
       setImage(i);
     }
   };
-
   const uploadToServer = async () => {
     const body = new FormData();
     body.append('file', image);
@@ -37,13 +41,15 @@ function UploadImage() {
           name="file"
           onChange={uploadToClient}
         />
-        <button
-          className="btn btn-primary"
-          type="submit"
-          onClick={uploadToServer}
-        >
-          Send to server
-        </button>
+        <div>
+          <Button
+            className="btn btn-primary"
+            type="submit"
+            onClick={uploadToServer}
+          >
+            Send to server
+          </Button>
+        </div>
       </div>
     </div>
   );
@@ -85,7 +91,9 @@ function AlprdStream() {
           <code className="font-mono font-bold">pages/index.js</code>
         </p>
       </div>
-
+      <div className="border-solid border-4 border-red-500 flex  flex-col items-center justify-between p-2 shadow">
+        <VoideoStream />
+      </div>
       <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-2 lg:text-left">
         <div className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">
           <UploadImage />
