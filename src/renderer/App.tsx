@@ -5,16 +5,36 @@ import './App.css';
 import 'tailwindcss/tailwind.css';
 
 function UploadImage() {
-  const [count, setCount] = useState(0);
-  function handleClick() {
-    setCount(count + 1);
-  }
+  const [image, setImage] = useState(null);
+
+  const uploadToClient = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const i = event.target.files[0];
+
+      setImage(i);
+    }
+  };
+
+  const uploadToServer = async () => {
+    const body = new FormData();
+    body.append('file', image);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const response = await fetch('http://35.246.54.118:5000/upload', {
+      method: 'POST',
+      body,
+    });
+  };
   return (
     <div className=" border-solid border-4 border-blue-500 flex  items-center justify-between p-4 shadow">
       <div className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">
         <h2 className="mb-3 text-2xl font-semibold">Upload Image</h2>
-        <button type="submit" onClick={handleClick}>
-          You pressed me {count} times
+        <input type="file" name="myImage" onChange={uploadToClient} />
+        <button
+          className="btn btn-primary"
+          type="submit"
+          onClick={uploadToServer}
+        >
+          Send to server
         </button>
       </div>
     </div>
