@@ -5,11 +5,16 @@ import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 import './App.css';
 import 'tailwindcss/tailwind.css';
-import { Button } from 'flowbite-react';
+import { Button, FileInput, Label} from 'flowbite-react';
+import { ReactComponent as Loader } from '../../assets/loader.svg'
+
+
+
+
 
 function VoideoStream() {
   return (
-      <video controls width="90%" className="videoPlayer" src="http://35.246.54.118:5000/video" />
+      <video controls width="30%" className="videoPlayer" src="http://35.246.54.118:5000/video" />
   );
 }
 function UploadImage() {
@@ -33,7 +38,56 @@ function UploadImage() {
   return (
     <div className=" border-solid border-4 border-blue-500 flex  items-center justify-between p-4 shadow">
       <div className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">
-        <h2 className="mb-3 text-2xl font-semibold">Upload Image</h2>
+      <div>
+      <div className="mb-2 block">
+        <Label htmlFor="file-upload" value="Upload Image" />
+        <h2 className="mb-3 text-2xl font-semibold">Image File</h2>
+      </div>
+      <FileInput
+          id="image-upload"
+          accept="image/*"
+          name="file"
+          onChange={uploadToClient}
+      />
+    </div>
+        <div>
+          <Button
+            className="btn btn-primary"
+            type="submit"
+            onClick={uploadToServer}
+          >
+            Send to server
+
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+// eslint-disable-next-line react/prop-types
+function UploadVideo({loading, text, disabled}) {
+  const [image, setImage] = useState(null);
+  const uploadToClient = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const i = event.target.files[0];
+      setImage(i);
+    }
+  };
+
+  const uploadToServer = async () => {
+    const body = new FormData();
+    body.append('file', image);
+    console.log(image);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const response = await fetch('http://35.246.54.118:5000/uploadvideo', {
+      method: 'POST',
+      body,
+    });
+  };
+  return (
+    <div className=" border-solid border-4 border-blue-500 flex  items-center justify-between p-4 shadow">
+      <div className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">
+        <h2 className="mb-3 text-2xl font-semibold">Upload Video</h2>
         <input
           accept="image/*"
           id="files"
@@ -43,22 +97,16 @@ function UploadImage() {
         />
         <div>
           <Button
-            className="btn btn-primary"
+            className="submit-btn"
             type="submit"
             onClick={uploadToServer}
+            disabled={disabled}
           >
+           {!loading ? text : <Loader className="spinner" />}
+
             Send to server
           </Button>
         </div>
-      </div>
-    </div>
-  );
-}
-function UploadVideo() {
-  return (
-    <div className=" border-solid border-4 border-blue-500 flex  items-center justify-between p-4 shadow">
-      <div className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">
-        <h2 className="mb-3 text-2xl font-semibold">Upload Video</h2>
       </div>
     </div>
   );
