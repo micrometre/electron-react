@@ -16,8 +16,9 @@ body {
   animation-duration: 500ms;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
-  min-width: 360px;
-  min-height: 360px;
+  min-width: 20px;
+  min-height: 5px;
+  padding: auto;
  }
 
  @keyframes spin {
