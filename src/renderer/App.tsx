@@ -64,7 +64,7 @@ function VideoStream() {
 
 function Camerastream() {
   return (
-      <video controls width="90%" className="videoPlayer" src="http://127.0.0.1:8082/" />
+      <video controls width="90%" className="videoPlayer"  src="http://127.0.0.1:8082/" />
   );
 }
 
