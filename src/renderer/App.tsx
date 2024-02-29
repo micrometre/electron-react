@@ -1,3 +1,5 @@
+/* eslint-disable no-alert */
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable no-console */
 /* eslint-disable react/jsx-no-bind */
@@ -6,10 +8,12 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/prop-types */
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import 'tailwindcss/tailwind.css';
 import { ReactComponent as Loader } from '../../assets/loader.svg';
+
+window.electron.ipcRenderer.sendMessage('ipc-example', ['pinging']);
 
 function Button({ uploadToServer, text, loading, disabled }) {
   return (
@@ -56,17 +60,25 @@ function ImageUpload() {
   );
 }
 
-function VideoStream() {
+
+function AlprdMngt({loading, text}) {
+  const [showLoader, setShowLoader] = useState(false)
+  function handleClick() {
+  setShowLoader(true);
+  console.log('You clicked me!');
+  setShowLoader(false);
+  }
   return (
-      <video controls width="90%" className="videoPlayer" src="http://127.0.0.1:5000/video" />
-  );
+    <div>
+      <h1> Welcome to My blog gallery ssg</h1>
+      <button id='start-camera'   onClick={handleClick}>
+      {!loading ? text : <Loader className="spinner" />}
+      Click me
+    </button>
+    </div>
+  )
 }
 
-function Camerastream() {
-  return (
-      <video controls width="90%" className="videoPlayer"  src="http://127.0.0.1:8082/" />
-  );
-}
 
 function AlprdService() {
   return (
@@ -78,10 +90,7 @@ function AlprdService() {
         </p>
       </div>
       <div className="border-solid border-4 border-red-500 flex  flex-col items-center justify-between p-2 shadow">
-        <Camerastream/>
-      </div>
-      <div className="border-solid border-4 border-red-500 flex  flex-col items-center justify-between p-2 shadow">
-        <VideoStream/>
+        <AlprdMngt />
       </div>
       <div className="border-solid border-4 border-red-500 flex  flex-col items-center justify-between p-2 shadow">
         <ImageUpload />
